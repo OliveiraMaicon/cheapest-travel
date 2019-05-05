@@ -1,15 +1,16 @@
 package br.com.booking.travel.infraestruture.helper
 
 import br.com.booking.travel.domain.model.Route
-import java.io.IOException
-import java.io.FileNotFoundException
-import java.io.FileReader
-import java.io.BufferedReader
+import java.io.*
 
 
 class FileUtils {
 
-    fun readCSV(file: String): List<Route> {
+    companion object{
+        const val NAME_CSV_FILE = "routes.csv"
+    }
+
+    fun readCSV(file: String): MutableList<Route> {
         var buffer: BufferedReader? = null
         var line = ""
         var routes: MutableList<Route> = arrayListOf()
@@ -41,5 +42,42 @@ class FileUtils {
             }
             return routes
         }
+    }
+
+    fun writeInCSV(newRoutes: List<Route>){
+
+        var fileWriter: FileWriter? = null
+
+        try {
+            val oldRoutes = readCSV(NAME_CSV_FILE)
+
+            oldRoutes.addAll(newRoutes)
+
+            fileWriter = FileWriter(NAME_CSV_FILE)
+
+            for (route in oldRoutes) {
+                fileWriter.append(route.start)
+                fileWriter.append(',')
+                fileWriter.append(route.end)
+                fileWriter.append(',')
+                fileWriter.append(route.value.toString())
+                fileWriter.append('\n')
+            }
+
+            println("Write CSV successfully!")
+        } catch (e: Exception) {
+            println("Writing CSV error!")
+            e.printStackTrace()
+        } finally {
+            try {
+                fileWriter!!.flush()
+                fileWriter.close()
+            } catch (e: IOException) {
+                println("Flushing/closing error!")
+                e.printStackTrace()
+            }
+        }
+
+
     }
 }

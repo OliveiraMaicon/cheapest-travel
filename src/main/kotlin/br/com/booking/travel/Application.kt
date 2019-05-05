@@ -1,9 +1,8 @@
 package br.com.booking.travel
 
+import br.com.booking.travel.infraestruture.helper.FileUtils
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import java.util.*
-import kotlin.collections.HashMap
 
 @SpringBootApplication
 class Application{
@@ -12,6 +11,11 @@ class Application{
         @JvmStatic
         fun main(args: Array<String>) {
             runApplication<Application>(*args)
+            val values = FileUtils().readCSV("teste.csv")
+
+            values?.forEach {
+                println(it)
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package br.com.booking.travel.domain.model
 
-import br.com.booking.travel.Vertex
 import java.util.*
 import kotlin.collections.HashMap
 

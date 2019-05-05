@@ -1,5 +1,6 @@
 package br.com.booking.travel.application
 
+import br.com.booking.travel.domain.model.Graph
 import br.com.booking.travel.domain.model.Route
 import br.com.booking.travel.domain.service.RouteService
 import org.springframework.stereotype.Service

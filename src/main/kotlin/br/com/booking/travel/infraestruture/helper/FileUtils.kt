@@ -1,13 +1,18 @@
 package br.com.booking.travel.infraestruture.helper
 
 import br.com.booking.travel.domain.model.Route
+import org.apache.logging.log4j.Logger
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import java.io.*
 
 
-class FileUtils {
+@Component
+class FileUtils(var logger: Logger) {
 
-    companion object{
-        const val NAME_CSV_FILE = "routes.csv"
+    companion object {
+        private const val NAME_CSV_FILE = "routes.csv"
+
     }
 
     fun readCSV(file: String): MutableList<Route> {
@@ -28,10 +33,9 @@ class FileUtils {
             }
 
         } catch (e: FileNotFoundException) {
-            println("Invalid file, try again.")
-            e.printStackTrace()
+            logger.error("Invalid file, try again.", e)
         } catch (e: IOException) {
-            e.printStackTrace()
+            logger.error(e)
         } finally {
             if (buffer != null) {
                 try {
@@ -44,7 +48,7 @@ class FileUtils {
         }
     }
 
-    fun writeInCSV(newRoutes: List<Route>){
+    fun writeInCSV(newRoutes: List<Route>) {
 
         var fileWriter: FileWriter? = null
 
@@ -64,20 +68,20 @@ class FileUtils {
                 fileWriter.append('\n')
             }
 
-            println("Write CSV successfully!")
+            logger.info("Write CSV successfully!")
         } catch (e: Exception) {
-            println("Writing CSV error!")
-            e.printStackTrace()
+            logger.error("Writing CSV error!", e)
         } finally {
             try {
                 fileWriter!!.flush()
                 fileWriter.close()
             } catch (e: IOException) {
-                println("Flushing/closing error!")
-                e.printStackTrace()
+                logger.error("Flushing/closing error!", e)
             }
         }
 
 
     }
+
+
 }

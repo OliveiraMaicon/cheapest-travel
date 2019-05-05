@@ -1,9 +1,12 @@
 package br.com.booking.travel
 
-import br.com.booking.travel.domain.model.Route
-import br.com.booking.travel.infraestruture.helper.FileUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+import org.springframework.beans.factory.InjectionPoint
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Scope
 
 @SpringBootApplication
 class Application{
@@ -12,15 +15,10 @@ class Application{
         @JvmStatic
         fun main(args: Array<String>) {
             runApplication<Application>(*args)
-           /* val values = FileUtils().readCSV("teste.csv")
-
-            values?.forEach {
-                println(it)
-            }*/
-
-            val routes =  listOf(Route("ABC","CDB",10))
-
-            FileUtils().writeInCSV(routes)
         }
     }
+
+    @Bean
+    @Scope("prototype")
+    fun logger(injectionPoint: InjectionPoint): Logger = LogManager.getLogger(injectionPoint.methodParameter?.containingClass)
 }

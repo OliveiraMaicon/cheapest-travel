@@ -1,12 +1,13 @@
 package br.com.booking.travel.application
 
-import br.com.booking.travel.domain.model.Graph
 import br.com.booking.travel.domain.model.Route
 import br.com.booking.travel.domain.service.RouteService
+import org.apache.logging.log4j.Logger
 import org.springframework.stereotype.Service
 
 @Service
-class RouteApplication(private val routeService: RouteService) {
+class RouteApplication(private val routeService: RouteService,
+                       private val logger: Logger) {
 
 
     fun findBetterRoute(start: String, end: String): String {
@@ -15,7 +16,7 @@ class RouteApplication(private val routeService: RouteService) {
 
     fun addRoutes(routes: List<Route>) {
 
-        routeService
+        routeService.addRoutes(routes)
     }
 
 

@@ -4,8 +4,8 @@ import br.com.booking.travel.infraestructure.exceptions.ProcessException
 import java.util.*
 import kotlin.collections.HashMap
 
-class Graph(
-        edges: List<Route>,
+data class Graph(
+        private val edges: List<Route>,
         private val directed: Boolean
 ) {
     private val graph = HashMap<String, Vertex>(edges.size)

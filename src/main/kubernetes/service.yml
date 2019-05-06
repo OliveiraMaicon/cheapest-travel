@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cheapest-travel-ws
+    group: br.com.booking
+    namespace: booking-travel
+  name: cheapest-travel-service
+  namespace: booking-travel
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: cheapest-travel
+    group: br.com.booking
+  type: ClusterIP

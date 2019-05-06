@@ -21,3 +21,18 @@ include::{snippets}/RouterControllerTest/shouldCreateRoute/http-response.adoc[]
 
 .response body
 include::{snippets}/RouterControllerTest/shouldCreateRoute/response-body.adoc[]
+
+
+==== Verificar rota mais barata
+
+.curl request
+include::{snippets}/RouterControllerTest/shouldGetCheapestRoute/curl-request.adoc[]
+
+.request
+include::{snippets}/RouterControllerTest/shouldGetCheapestRoute/http-request.adoc[]
+
+.response
+include::{snippets}/RouterControllerTest/shouldGetCheapestRoute/http-response.adoc[]
+
+.response body
+include::{snippets}/RouterControllerTest/shouldGetCheapestRoute/response-body.adoc[]

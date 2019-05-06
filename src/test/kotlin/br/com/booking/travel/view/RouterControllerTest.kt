@@ -10,9 +10,11 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
 import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.payload.PayloadDocumentation
+import org.springframework.restdocs.request.RequestDocumentation
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.util.LinkedMultiValueMap
 import java.util.*
 
 
@@ -32,11 +34,32 @@ class RouterControllerTest : ApplicationTests() {
                 .andDo(MockMvcRestDocumentation.document("{ClassName}/{methodName}",
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                                PayloadDocumentation.requestFields(PayloadDocumentation.fieldWithPath("[]").description("Objeto de represenação de rota."),
+                                PayloadDocumentation.requestFields(PayloadDocumentation.fieldWithPath("[]").description("Representação de lista de rotas."),
                                         PayloadDocumentation.fieldWithPath("[].start").description("Rota de entrada."),
                                         PayloadDocumentation.fieldWithPath("[].end").description("Rota de saída."),
                                         PayloadDocumentation.fieldWithPath("[].value").description("Valor da rota"))
                         ))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+    }
+
+
+
+    @Test
+    fun shouldGetCheapestRoute(){
+        val params = LinkedMultiValueMap<String, String>()
+        params.add("start", "GRU")
+        params.add("end", "CDG")
+        mockMvc.perform(MockMvcRequestBuilders.get(PATH_ROUTE)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .params(params))
+                .andDo(MockMvcResultHandlers.print())
+                .andDo(MockMvcRestDocumentation.document("{ClassName}/{methodName}",
+                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
+                        RequestDocumentation.requestParameters(RequestDocumentation.parameterWithName("start").description("Variável que define o ponto de partida."),
+                                RequestDocumentation.parameterWithName("end").description("Variável que define o ponto de chegada."))
+                ))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
     }
 

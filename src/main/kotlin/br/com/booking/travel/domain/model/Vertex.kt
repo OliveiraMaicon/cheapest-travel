@@ -1,7 +1,7 @@
 package br.com.booking.travel.domain.model
 
 
-class Vertex(private val name: String) : Comparable<Vertex> {
+data class Vertex(private val name: String) : Comparable<Vertex> {
 
     var dist = Int.MAX_VALUE
     var previous: Vertex? = null

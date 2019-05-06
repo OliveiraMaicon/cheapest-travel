@@ -1,6 +1,5 @@
 package br.com.booking.travel.domain.service
 
-import br.com.booking.travel.domain.model.Graph
 import br.com.booking.travel.domain.model.Route
 import br.com.booking.travel.infraestructure.helper.FileUtils
 import org.apache.logging.log4j.Logger

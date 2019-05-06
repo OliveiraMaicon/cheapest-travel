@@ -3,9 +3,11 @@ server:
 spring:
   application:
     name: cheapest-travel
-  jackson:
-    serialization:
-      WRITE_DATES_AS_TIMESTAMPS: true
-      WRAP_ROOT_VALUE: true
-    deserialization:
-      UNWRAP_ROOT_VALUE: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["info","health","prometheus","metrics"]
+  endpoint:
+    health:
+      show-details: always

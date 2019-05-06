@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: cheapest-travel-ws
+  namespace: booking-travel
+  labels:
+    app: cheapest-travel-ws
+    tier: BE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cheapest-travel-ws
+      group: br.com.booking
+  template:
+    metadata:
+      annotations:
+        app: cheapest-travel-ws
+        name: cheapest-travel-ws
+        group: br.com.booking
+        namespace: booking-travel
+      labels:
+        app: cheapest-travel-ws
+        name: cheapest-travel-ws
+        group: br.com.booking
+        namespace: booking-travel
+        tier: BE
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - cheapest-travel-ws
+            topologyKey: kubernetes.io/hostname
+      serviceAccount: default
+      volumes:
+      - name: config
+        configMap:
+          name: cheapest-travel-cm
+          items:
+          - key: application.yml
+            path: application.yml
+          - key: log4j2.yml
+            path: log4j2.yml
+      containers:
+      - image: cheapest-travel:latest
+        name: cheapest-travel-ws
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: "220Mi"
+            cpu: "125m"
+          limits:
+            memory: "440Mi"
+            cpu: "500m"
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 180
+          periodSeconds: 10
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 50
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 5
+          timeoutSeconds: 2

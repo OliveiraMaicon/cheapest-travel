@@ -2,7 +2,8 @@
 
 * Para desenvolver essa lógica foi utilizado o algoritimo de Dijkstra.
 
- O empacotamento é divido pela responsabilidades de cada camada, ou seja:
+ O empacotamento é dividido pelas responsabilidades de cada camada, ou seja:
+ 
  > view : Camada no padrão RestFull responsável por tratar as request, com validações, padronizações de responses. 
  
  > domain/service Camada responsável gerenciar dados, seja ela sendo BD ou APIs externas.

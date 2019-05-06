@@ -7,13 +7,12 @@ class Vertex(private val name: String) : Comparable<Vertex> {
     var previous: Vertex? = null
     val neighbours = HashMap<Vertex, Int>()
 
-    fun printPath() {
-        when (previous) {
-            this -> print(name)
-            null -> print("$name(unreached)")
+    fun getPath() : String{
+        return when (previous) {
+            this -> name
+            null -> "$name(unreached)"
             else -> {
-                previous!!.printPath()
-                print(" -> $name($dist)")
+                previous!!.getPath() + " -> $name($dist)"
             }
         }
     }

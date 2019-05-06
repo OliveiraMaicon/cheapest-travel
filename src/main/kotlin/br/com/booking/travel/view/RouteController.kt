@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/route")
+@RequestMapping("/routes")
 class RouteController {
 
     @Autowired
@@ -20,16 +20,15 @@ class RouteController {
             return ResponseEntity.badRequest().body("Params START and END must have values")
         }
 
-        val betterRoute = routeApplication.findBetterRoute(start, end)
+        val betterRoute = routeApplication.findCheapestRoute(start.toUpperCase(), end.toUpperCase())
 
-        return ResponseEntity.ok().body("")
+        return ResponseEntity.ok().body("The cheapest route to travel is :$betterRoute")
     }
 
     @PutMapping
     fun addRoute(routes: List<Route>): ResponseEntity<*> {
-
         routeApplication.addRoutes(routes)
-        return ResponseEntity.ok().body("")
+        return ResponseEntity.ok().body("Success")
     }
 
 }

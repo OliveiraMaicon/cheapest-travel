@@ -1,4 +1,4 @@
-package br.com.booking.travel.infraestruture.helper
+package br.com.booking.travel.infraestructure.helper
 
 import br.com.booking.travel.domain.model.Route
 import org.apache.logging.log4j.Logger
@@ -15,13 +15,13 @@ class FileUtils(var logger: Logger) {
 
     }
 
-    fun readCSV(file: String): MutableList<Route> {
+    fun readCSV(): MutableList<Route> {
         var buffer: BufferedReader? = null
         var line = ""
         var routes: MutableList<Route> = arrayListOf()
 
         try {
-            buffer = BufferedReader(FileReader(file))
+            buffer = BufferedReader(FileReader(NAME_CSV_FILE))
             line = buffer.readLine()
             while (line != null) {
                 val tokens = line.split(",")
@@ -53,7 +53,7 @@ class FileUtils(var logger: Logger) {
         var fileWriter: FileWriter? = null
 
         try {
-            val oldRoutes = readCSV(NAME_CSV_FILE)
+            val oldRoutes = readCSV()
 
             oldRoutes.addAll(newRoutes)
 

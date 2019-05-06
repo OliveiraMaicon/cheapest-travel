@@ -2,4 +2,10 @@ server:
   port: ${PORT:8080}
 spring:
   application:
-    name: chipest-travel
+    name: cheapest-travel
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: true
+      WRAP_ROOT_VALUE: true
+    deserialization:
+      UNWRAP_ROOT_VALUE: true

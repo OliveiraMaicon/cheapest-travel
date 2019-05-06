@@ -1,0 +1,23 @@
+=== Routes
+
+Recurso para procurar uma rota mais barata e inserir novas rotas.
+
+==== Adicionar nova rota
+
+.curl request
+include::{snippets}/RouterControllerTest/shouldCreateRoute/curl-request.adoc[]
+
+.request
+include::{snippets}/RouterControllerTest/shouldCreateRoute/http-request.adoc[]
+
+.request body
+include::{snippets}/RouterControllerTest/shouldCreateRoute/request-body.adoc[]
+
+.request fields
+include::{snippets}/RouterControllerTest/shouldCreateRoute/request-fields.adoc[]
+
+.response
+include::{snippets}/RouterControllerTest/shouldCreateRoute/http-response.adoc[]
+
+.response body
+include::{snippets}/RouterControllerTest/shouldCreateRoute/response-body.adoc[]

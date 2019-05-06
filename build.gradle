@@ -6,6 +6,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.asciidoctor.convert'
 
 group = 'br.com.booking'
 version = '0.0.1-SNAPSHOT'
@@ -31,6 +32,8 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.6'
+
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:1.2.6.RELEASE'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
@@ -40,8 +43,34 @@ test {
 }
 
 asciidoctor {
+
+    attributes "snippets": snippetsDir
+
     inputs.dir snippetsDir
     dependsOn test
+    sourceDir 'src/docs/asciidoc'
+}
+
+task copyRestDocs(type: Copy) {
+    dependsOn asciidoctor
+    from "${asciidoctor.outputDir}/html5"
+    into "${sourceSets.main.output.resourcesDir}/static/docs"
+}
+
+bootRun {
+    dependsOn copyRestDocs
+}
+
+sourceSets {
+    main {
+        kotlin {
+            srcDirs += 'src/main/kotlin'
+        }
+
+        resources {
+            srcDirs('src/main/resources')
+        }
+    }
 }
 
 compileKotlin {

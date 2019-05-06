@@ -17,7 +17,7 @@ class FileUtils(var logger: Logger) {
 
     fun readCSV(): MutableList<Route> {
         var buffer: BufferedReader? = null
-        var line = ""
+        var line: String
         var routes: MutableList<Route> = arrayListOf()
 
         try {

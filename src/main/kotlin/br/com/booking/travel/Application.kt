@@ -7,12 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @SpringBootApplication
-class Application : WebMvcConfigurer {
+class Application {
 
 
     companion object{
@@ -26,10 +23,10 @@ class Application : WebMvcConfigurer {
         }
     }
 
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations(*CLASSPATH_RESOURCE_LOCATIONS)
-    }
+//    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+//        registry.addResourceHandler("/**")
+//                .addResourceLocations(*CLASSPATH_RESOURCE_LOCATIONS)
+//    }
 
     @Bean
     @Scope("prototype")

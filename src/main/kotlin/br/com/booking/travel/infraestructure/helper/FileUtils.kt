@@ -18,7 +18,7 @@ class FileUtils(var logger: Logger) {
     fun readCSV(): MutableList<Route> {
         var buffer: BufferedReader? = null
         var line: String
-        var routes: MutableList<Route> = arrayListOf()
+        val routes: MutableList<Route> = arrayListOf()
 
         try {
             buffer = BufferedReader(FileReader(NAME_CSV_FILE))
@@ -44,8 +44,8 @@ class FileUtils(var logger: Logger) {
                     e.printStackTrace()
                 }
             }
-            return routes
         }
+        return routes
     }
 
     fun writeInCSV(newRoutes: List<Route>) {

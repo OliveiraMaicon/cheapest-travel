@@ -11,14 +11,22 @@ data class Graph(
     private val graph = HashMap<String, Vertex>(edges.size)
 
     init {
-        for (e in edges) {
-            if (!graph.containsKey(e.start)) graph[e.start] = Vertex(e.start)
-            if (!graph.containsKey(e.end)) graph[e.end] = Vertex(e.end)
-        }
+        compleGraphEdgesValues()
 
-        for (e in edges) {
-            graph[e.start]!!.neighbours[graph[e.end]!!] = e.value
-            if (!directed) graph[e.end]!!.neighbours[graph[e.start]!!] = e.value
+        linkNeighboursEdges()
+    }
+
+    private fun linkNeighboursEdges() {
+        edges.forEach {
+            graph[it.start]!!.neighbours[graph[it.end]!!] = it.value
+            if (!directed) graph[it.end]!!.neighbours[graph[it.start]!!] = it.value
+        }
+    }
+
+    private fun compleGraphEdgesValues() {
+        edges.forEach {
+            if (!graph.containsKey(it.start)) graph[it.start] = Vertex(it.start)
+            if (!graph.containsKey(it.end)) graph[it.end] = Vertex(it.end)
         }
     }
 
@@ -30,10 +38,10 @@ data class Graph(
         val source = graph[startName]
         val q = TreeSet<Vertex>()
 
-        for (v in graph.values) {
-            v.previous = if (v == source) source else null
-            v.dist = if (v == source) 0 else Int.MAX_VALUE
-            q.add(v)
+        graph.values.forEach {
+            it.previous = if (it == source) source else null
+            it.dist = if (it == source) 0 else Int.MAX_VALUE
+            q.add(it)
         }
 
         dijkstra(q)
@@ -44,10 +52,10 @@ data class Graph(
             val u = q.pollFirst()
             if (u.dist == Int.MAX_VALUE) break
 
-            for (a in u.neighbours) {
-                val v = a.key
+            u.neighbours.forEach {
+                val v = it.key
 
-                val alternateDist = u.dist + a.value
+                val alternateDist = u.dist + it.value
                 if (alternateDist < v.dist) {
                     q.remove(v)
                     v.dist = alternateDist

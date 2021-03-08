@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
+import org.springframework.web.reactive.config.EnableWebFlux
 
+@EnableWebFlux
 @SpringBootApplication
 class Application {
 

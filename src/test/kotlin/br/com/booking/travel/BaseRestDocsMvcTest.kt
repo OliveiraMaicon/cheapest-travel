@@ -31,15 +31,6 @@ abstract class BaseRestDocsMvcTest {
                 .baseUrl("http://localhost")
                 .filter(WebTestClientRestDocumentation.documentationConfiguration(restDocumentation))
                 .build()
-
-        /*mockMvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply<DefaultMockMvcBuilder>(MockMvcRestDocumentation.documentationConfiguration(this.restDocumentation)
-                        .uris()
-                        .withScheme("http")
-                        .withHost("localhost")
-                        .withPort(8080))
-                .build()*/
     }
 
     fun json(any: Any): String = mapper.writeValueAsString(any)

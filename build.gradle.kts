@@ -41,8 +41,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     asciidoctor("org.springframework.restdocs:spring-restdocs-asciidoctor")
     implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("io.github.resilience4j:resilience4j-kotlin:1.1.0")
-    implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }

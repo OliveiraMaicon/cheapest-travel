@@ -2,7 +2,6 @@ package br.com.booking.travel.infraestructure.helper
 
 import br.com.booking.travel.domain.model.Route
 import org.apache.logging.log4j.Logger
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.*
 

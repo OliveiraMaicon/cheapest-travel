@@ -1,66 +1,84 @@
 package br.com.booking.travel.view
 
 import br.com.booking.travel.Application.Companion.PATH_ROUTE
-import br.com.booking.travel.ApplicationTests
+import br.com.booking.travel.BaseRestDocsMvcTest
+import br.com.booking.travel.application.RouteApplication
 import br.com.booking.travel.domain.model.Route
-import org.junit.Test
-import org.springframework.boot.test.context.SpringBootTest
+import br.com.booking.travel.domain.service.RouteService
+import br.com.booking.travel.infraestructure.helper.FileUtils
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mockito
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
+import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.operation.preprocess.Preprocessors
-import org.springframework.restdocs.payload.FieldDescriptor
-import org.springframework.restdocs.payload.PayloadDocumentation
 import org.springframework.restdocs.request.RequestDocumentation
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.util.LinkedMultiValueMap
-import java.util.*
 
 
-@SpringBootTest
-class RouterControllerTest : ApplicationTests() {
+@WebFluxTest(controllers = [RouteController::class])
+@ExtendWith(RestDocumentationExtension::class, SpringExtension::class)
+@Import(RouteApplication::class, RouteService::class, FileUtils::class)
+class RouterControllerTest : BaseRestDocsMvcTest() {
 
+    @MockBean
+    lateinit var fileUtils: FileUtils
+
+    var routesCsv = mutableListOf<Route>()
 
     @Test
-    fun shouldCreateRoute(){
-        val route = listOf(Route("SLC","BRC",30))
-                println(json(route))
-        mockMvc.perform(MockMvcRequestBuilders.put(PATH_ROUTE)
+    fun shouldCreateRoute() {
+        val route = listOf(Route("SLC", "BRC", 30))
+        println(json(route))
+
+        mockCsv(routesCsv)
+
+        webTestClient.put().uri(PATH_ROUTE)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json(route)))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("{ClassName}/{methodName}",
-                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
-                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                                PayloadDocumentation.requestFields(PayloadDocumentation.fieldWithPath("[]").description("Representação de lista de rotas."),
-                                        PayloadDocumentation.fieldWithPath("[].start").description("Rota de entrada."),
-                                        PayloadDocumentation.fieldWithPath("[].end").description("Rota de saída."),
-                                        PayloadDocumentation.fieldWithPath("[].value").description("Valor da rota"))
-                        ))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+                .bodyValue(json(route))
+                .exchange().expectStatus().is2xxSuccessful.expectBody()
+                .consumeWith(WebTestClientRestDocumentation.document("{ClassName}/{methodName}"))
+
+    }
+
+    private fun mockCsv(routesCsv: MutableList<Route>) {
+        routesCsv.add(Route("GRU", "BRC", 10))
+        routesCsv.add(Route("BRC", "SCL", 5))
+        routesCsv.add(Route("GRU", "CDG", 75))
+        routesCsv.add(Route("GRU", "SCL", 20))
+        routesCsv.add(Route("GRU", "ORL", 56))
+        routesCsv.add(Route("ORL", "CDG", 5))
+        routesCsv.add(Route("SCL", "ORL", 20))
+
+        Mockito.`when`(fileUtils.readCSV()).thenReturn(routesCsv)
     }
 
 
-
     @Test
-    fun shouldGetCheapestRoute(){
-        val params = LinkedMultiValueMap<String, String>()
-        params.add("start", "GRU")
-        params.add("end", "CDG")
-        mockMvc.perform(MockMvcRequestBuilders.get(PATH_ROUTE)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .params(params))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("{ClassName}/{methodName}",
+    fun shouldGetCheapestRoute() {
+
+        mockCsv(routesCsv)
+
+        webTestClient.get().uri {
+            it.path(PATH_ROUTE)
+            it.queryParam("start", "GRU")
+            it.queryParam("end", "CDG")
+            it.build()
+
+        }.accept(MediaType.APPLICATION_JSON)
+                .exchange().expectStatus().is2xxSuccessful.expectBody()
+                .consumeWith(WebTestClientRestDocumentation.document("{ClassName}/{methodName}",
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
                         RequestDocumentation.requestParameters(RequestDocumentation.parameterWithName("start").description("Variável que define o ponto de partida."),
-                                RequestDocumentation.parameterWithName("end").description("Variável que define o ponto de chegada."))
-                ))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+                        RequestDocumentation.parameterWithName("end").description("Variável que define o ponto de chegada."))))
+
     }
 
 }

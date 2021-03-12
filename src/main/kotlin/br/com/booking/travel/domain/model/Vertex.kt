@@ -22,5 +22,11 @@ data class Vertex(private val name: String) : Comparable<Vertex> {
         return dist.compareTo(other.dist)
     }
 
-    override fun toString() = "($name, $dist)"
+    override fun toString() : String {
+        return if(previous != null){
+            "($name, $dist, ${previous?.dist})"
+        }else{
+            "($name, $dist)"
+        }
+    }
 }

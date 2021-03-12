@@ -11,22 +11,34 @@ data class Graph(
     private val graph = HashMap<String, Vertex>(edges.size)
 
     init {
-        compleGraphEdgesValues()
+        completeGraphEdgesValues()
 
         linkNeighboursEdges()
     }
 
     private fun linkNeighboursEdges() {
+        println("Link edges")
         edges.forEach {
+            println(it)
             graph[it.start]!!.neighbours[graph[it.end]!!] = it.value
-            if (!directed) graph[it.end]!!.neighbours[graph[it.start]!!] = it.value
+            println("Atualizado > $graph")
+            if (!directed) {
+                graph[it.end]!!.neighbours[graph[it.start]!!] = it.value
+                println(graph)
+            }
+
         }
     }
 
-    private fun compleGraphEdgesValues() {
+    private fun completeGraphEdgesValues() {
+        println("Complete Graph")
         edges.forEach {
-            if (!graph.containsKey(it.start)) graph[it.start] = Vertex(it.start)
-            if (!graph.containsKey(it.end)) graph[it.end] = Vertex(it.end)
+            println(it)
+            if (!graph.containsKey(it.start))
+                graph[it.start] = Vertex(it.start)
+            if (!graph.containsKey(it.end))
+                graph[it.end] = Vertex(it.end)
+            println("Atualizado > $graph")
         }
     }
 
@@ -49,18 +61,19 @@ data class Graph(
 
     private fun dijkstra(q: TreeSet<Vertex>) {
         while (!q.isEmpty()) {
-            val u = q.pollFirst()
-            if (u.dist == Int.MAX_VALUE) break
+            val actualVextex = q.pollFirst()
+            if (actualVextex.dist == Int.MAX_VALUE)
+                break
 
-            u.neighbours.forEach {
-                val v = it.key
+            actualVextex.neighbours.forEach {
+                val neighboursVertex = it.key
 
-                val alternateDist = u.dist + it.value
-                if (alternateDist < v.dist) {
-                    q.remove(v)
-                    v.dist = alternateDist
-                    v.previous = u
-                    q.add(v)
+                val alternateDist = actualVextex.dist + it.value
+                if (alternateDist < neighboursVertex.dist) {
+                    q.remove(neighboursVertex)
+                    neighboursVertex.dist = alternateDist
+                    neighboursVertex.previous = actualVextex
+                    q.add(neighboursVertex)
                 }
             }
         }

@@ -67,8 +67,9 @@ class RouterControllerTest : BaseRestDocsMvcTest() {
 
         webTestClient.get().uri {
             it.path(PATH_ROUTE)
-            it.queryParam("start", "GRU")
-            it.queryParam("end", "CDG")
+            it.queryParam("start", "SCL")
+            it.queryParam("end", "ORL")
+            it.queryParam("directed", "true")
             it.build()
 
         }.accept(MediaType.APPLICATION_JSON)
@@ -77,7 +78,8 @@ class RouterControllerTest : BaseRestDocsMvcTest() {
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
                         RequestDocumentation.requestParameters(RequestDocumentation.parameterWithName("start").description("Variável que define o ponto de partida."),
-                        RequestDocumentation.parameterWithName("end").description("Variável que define o ponto de chegada."))))
+                        RequestDocumentation.parameterWithName("end").description("Variável que define o ponto de chegada."),
+                                RequestDocumentation.parameterWithName("directed").description("Variavel que indica se quer rota direta."))))
 
     }
 

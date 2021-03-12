@@ -12,13 +12,13 @@ class RouteController(private val routeApplication: RouteApplication) {
 
 
     @GetMapping
-    fun betterRoute(@RequestParam("start") start : String, @RequestParam("end") end : String ): ResponseEntity<*> {
+    fun betterRoute(@RequestParam("start") start : String, @RequestParam("end") end : String,  @RequestParam("directed", defaultValue = "true", required = false) directed : Boolean): ResponseEntity<*> {
 
         if(start.isBlank() || end.isBlank()){
             return ResponseEntity.badRequest().body("Params START and END must have values")
         }
 
-        val betterRoute = routeApplication.findCheapestRoute(start.toUpperCase(), end.toUpperCase())
+        val betterRoute = routeApplication.findCheapestRoute(start.toUpperCase(), end.toUpperCase(), directed)
 
         return ResponseEntity.ok().body("The cheapest route to travel is :$betterRoute")
     }

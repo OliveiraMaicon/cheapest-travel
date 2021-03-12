@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service
 class RouteApplication(private val routeService: RouteService,
                        private val logger: Logger) {
 
-    fun findCheapestRoute(start: String, end: String): String {
+    fun findCheapestRoute(start: String, end: String, directed: Boolean): String {
         val routes = routeService.getRoutes()
 
-        val graph = Graph(routes,true)
+        val graph = Graph(routes,directed)
 
         graph.dijkstra(start)
 

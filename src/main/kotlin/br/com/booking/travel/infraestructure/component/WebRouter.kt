@@ -1,4 +1,4 @@
-package br.com.booking.travel.view
+package br.com.booking.travel.infraestructure.component
 
 import org.apache.logging.log4j.Logger
 import org.springframework.context.annotation.Bean
@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.*
 import java.net.URI
 
 @Component
-class IndexController(private val logger: Logger) {
+class WebRouter(private val logger: Logger) {
 
     @Bean
     fun staticRouter(): RouterFunction<ServerResponse> {
